@@ -3,3 +3,6 @@ dist
 *.pdf
 *.png
 a.out
+.cache
+*.o
+*.so

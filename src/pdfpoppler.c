@@ -212,12 +212,9 @@ bool poppler_page_to_pdf(PopplerPage* page, const char* output_pdf) {
     cairo_scale(cr, pixel_width / width, pixel_height / height);
 
     poppler_page_render(page, cr);
-
     cairo_surface_finish(surface);
-
-    cairo_destroy(cr);
     cairo_surface_destroy(surface);
-
+    cairo_destroy(cr);
     unlock_cairo_mutex();
     return true;
 }
