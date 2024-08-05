@@ -192,15 +192,17 @@ bool poppler_page_to_pdf(PopplerPage* page, const char* output_pdf) {
     lock_cairo_mutex();
 
     surface = cairo_pdf_surface_create(output_pdf, pixel_width, pixel_height);
-    if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
-        puts("Error creating PDF surface");
+    cairo_status_t status = cairo_surface_status(surface);
+    if (status != CAIRO_STATUS_SUCCESS) {
+        printf("Error creating PDF surface: %s\n", cairo_status_to_string(status));
         unlock_cairo_mutex();
         return false;
     }
 
     cr = cairo_create(surface);
+    status = cairo_status(cr);
     if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
-        puts("Error creating cairo context");
+        printf("Error creating cairo context: %s\n", cairo_status_to_string(status));
         unlock_cairo_mutex();
         return false;
     }
