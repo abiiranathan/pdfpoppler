@@ -1,5 +1,4 @@
-
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.30.0)
 project(pdfpoppler VERSION 0.1.0 LANGUAGES C DESCRIPTION "A simple wrapper around poppler glib")
 
 set(CMAKE_C_STANDARD 11)
@@ -16,6 +15,7 @@ find_package(PkgConfig REQUIRED)
 # Use pkg-config to get the necessary flags
 pkg_check_modules(POPPLER REQUIRED poppler-glib)
 pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(ZLIB REQUIRED zlib)
 
 include(GNUInstallDirs)
 include(CTest)
@@ -27,14 +27,14 @@ file(GLOB_RECURSE HEADERS "include/*.h")
 add_library(${PROJECT_NAME} ${SOURCES})
 
 # Include directories for Poppler and Cairo
-target_include_directories(${PROJECT_NAME} PUBLIC ${POPPLER_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${POPPLER_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
 
 # Link directories
-target_link_directories(${PROJECT_NAME} PUBLIC ${POPPLER_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS})
+target_link_directories(${PROJECT_NAME} PUBLIC ${POPPLER_LIBRARY_DIRS} ${CAIRO_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
 
 # Add the compile options(CFLAGS)
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror )
-target_link_libraries(${PROJECT_NAME} PUBLIC glib-2.0 gobject-2.0 gio-2.0 cairo poppler-glib)
+target_link_libraries(${PROJECT_NAME} PUBLIC glib-2.0 gobject-2.0 gio-2.0 cairo poppler-glib z)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     # If in release mode, add some security flags
